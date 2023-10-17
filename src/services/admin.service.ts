@@ -5,91 +5,80 @@ import cloudinary from "cloudinary";
 import { Queue } from "bullmq";
 
 const queue = new Queue("image-upload", {
-  redis: { host: "127.0.0.1", port: 6379 },
+    redis: { host: "127.0.0.1", port: 6379 }
 } as any);
 
 class AdminService {
-  async create(data: UserCreateInput) {
-    return await new User(data).save();
-  }
-
-  async getAll(pagination: PaginationInput) {
-    /* Note:
-     * - if sorting in ascending order (1) then use $gt
-     * - if sorting in descending order (-1) then use $lt
-     */
-    const { limit = 5, next } = pagination;
-    let query = {};
-
-    const total = await User.countDocuments(query);
-
-    if (next) {
-      const [nextId, nextCreatedAt] = next.split("_");
-      query = {
-        ...query,
-        $or: [
-          { createdAt: { $gt: nextCreatedAt } },
-          { createdAt: nextCreatedAt, _id: { $gt: nextId } },
-        ],
-      };
+    async create(data: UserCreateInput) {
+        return await new User(data).save();
     }
 
-    const users = await User.find(query, { password: 0, __v: 0 })
-      .sort({ createdAt: 1, _id: 1 })
-      .limit(Number(limit) + 1);
+    async getAll(pagination: PaginationInput) {
+        /* Note:
+         * - if sorting in ascending order (1) then use $gt
+         * - if sorting in descending order (-1) then use $lt
+         */
+        const { limit = 5, next } = pagination;
+        let query = {};
 
-    const hasNext = users.length > limit;
-    if (hasNext) users.pop(); // Remove the extra user from the array
+        const total = await User.countDocuments(query);
 
-    const nextCursor = hasNext
-      ? `${users[users.length - 1]._id}_${users[
-          users.length - 1
-        ].createdAt.getTime()}`
-      : null;
+        if (next) {
+            const [nextId, nextCreatedAt] = next.split("_");
+            query = {
+                ...query,
+                $or: [{ createdAt: { $gt: nextCreatedAt } }, { createdAt: nextCreatedAt, _id: { $gt: nextId } }]
+            };
+        }
 
-    return {
-      users,
-      pagination: {
-        total,
-        hasNext,
-        next: nextCursor,
-      },
-    };
-  }
+        const users = await User.find(query, { password: 0, __v: 0 })
+            .sort({ createdAt: 1, _id: 1 })
+            .limit(Number(limit) + 1);
 
-  async getOne(userId: string) {
-    const user = await User.findOne({ _id: userId }, { password: 0, __v: 0 });
-    if (!user) throw new CustomError("user does not exist");
+        const hasNext = users.length > limit;
+        if (hasNext) users.pop(); // Remove the extra user from the array
 
-    return user;
-  }
+        const nextCursor = hasNext ? `${users[users.length - 1]._id}_${users[users.length - 1].createdAt.getTime()}` : null;
 
-  async update(
-    userId: string,
-    data: UserUpdateInput,
-    imagePath: string | undefined
-  ) {
-    const user = await User.findById(userId);
-    if (!user) {
-      throw new CustomError("User does not exist");
+        return {
+            users,
+            pagination: {
+                total,
+                hasNext,
+                next: nextCursor
+            }
+        };
     }
 
-    if (imagePath) {
-      await queue.add("image-upload", { imagePath, userId });
+    async getOne(userId: string) {
+        const user = await User.findOne({ _id: userId }, { password: 0, __v: 0 });
+        if (!user) throw new CustomError("user does not exist");
+
+        return user;
     }
 
-    await user.updateOne(data);
-    const updatedUser = await User.findById(userId);
+    async update(userId: string, data: UserUpdateInput, imagePath: string | undefined) {
+        const user = await User.findById(userId);
+        if (!user) {
+            throw new CustomError("User does not exist");
+        }
 
-    return updatedUser;
-  }
+        if (imagePath) {
+            await queue.add("image-upload", { imagePath, userId });
+        }
 
-  async delete(userId: string) {
-    const user = await User.findByIdAndDelete({ _id: userId });
-    if (!user) throw new CustomError("user does not exist");
+        await user.updateOne(data);
+        const updatedUser = await User.findById(userId);
 
-    return user;
-  }
+        return updatedUser;
+    }
+
+    async delete(userId: string) {
+        const user = await User.findByIdAndDelete({ _id: userId });
+        if (!user) throw new CustomError("user does not exist");
+
+        return user;
+    }
 }
 
 export default new AdminService();

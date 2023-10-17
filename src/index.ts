@@ -26,12 +26,11 @@ app.use(
 app.use(cookieParser());
 
 /*
-*
-*
-* This is for HTTPS server
-*
-*/
-
+ *
+ *
+ * This is for HTTPS server
+ *
+ */
 
 // const certificateFolder = "certificate";
 
@@ -40,7 +39,6 @@ app.use(cookieParser());
 // const credentials = { key: privateKey, cert: certificate };
 
 // const httpsServer = https.createServer(credentials, app);
-
 
 const httpServer = http.createServer(app);
 
@@ -68,11 +66,9 @@ cloudinary.v2.config({
 //     console.log(`:::> 🚀 Server ready at https://localhost:${PORT}`);
 // });
 
- httpServer.listen(PORT, () => {
-   console.log(
-     `HTTP Server is working on http://localhost:${PORT}`
-   );
- });
+httpServer.listen(PORT, () => {
+    console.log(`HTTP Server is working on http://localhost:${PORT}`);
+});
 
 app.on("error", (error) => {
     console.error(`<::: An error occurred on the server: \n ${error}`);

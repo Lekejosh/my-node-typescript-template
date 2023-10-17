@@ -26,7 +26,7 @@ router.use("/api/v1/admin", AdminRoutes);
 router.use("/api/v1/job", JobRoute);
 
 router.get("/", (req: Request, res: Response) => {
-  return res.status(200).json({ message: "You're not meant to be here :)" });
+    return res.status(200).json({ message: "You're not meant to be here :)" });
 });
 
 export default router;

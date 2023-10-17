@@ -2,7 +2,7 @@
 import { v2 as cloudinary } from "cloudinary";
 import User from "../models/user.model";
 import { Queue, Worker } from "bullmq";
-import { APP_NAME } from '../config'
+import { APP_NAME } from "../config";
 const queue = new Queue("image-upload", {
     redis: { host: "127.0.0.1", port: 6379 }
 } as any);

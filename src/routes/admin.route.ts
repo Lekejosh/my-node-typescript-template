@@ -13,12 +13,7 @@ router.get("/", auth(ROLE.ADMIN), AdminCtrl.getAll);
 
 router.get("/:userId", auth(ROLE.ADMIN), AdminCtrl.getOne);
 
-router.put(
-  "/:userId",
-  auth(ROLE.ADMIN),
-  upload.single("image"),
-  AdminCtrl.update
-);
+router.put("/:userId", auth(ROLE.ADMIN), upload.single("image"), AdminCtrl.update);
 
 router.delete("/:userId", auth(ROLE.ADMIN), AdminCtrl.delete);
 
