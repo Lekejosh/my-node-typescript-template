@@ -6,6 +6,19 @@
 
 Get started with backend development using Node.js and TypeScript. This starter template includes authentication, user, and admin APIs to kickstart your project.
 
+## Technologies
+
+-   Node
+-   Typescript
+-   Express
+-   Mongoose
+-   Redis
+
+## Linters
+
+-   Eslint
+-   Prettier
+
 ## Prerequisites
 
 Before you begin, ensure you have met the following requirements:
