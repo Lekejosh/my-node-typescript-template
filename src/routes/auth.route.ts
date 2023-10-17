@@ -14,14 +14,14 @@ router.get("/refresh-access-token", AuthCtrl.refreshAccessToken);
 
 router.delete("/logout", AuthCtrl.logout);
 
-router.post("/verify-email", AuthCtrl.verifyEmail);
+router.put("/email", auth(ROLE.USER), AuthCtrl.verifyEmail);
 
-router.get("/request-email-verification", AuthCtrl.requestEmailVerification);
+router.get("/email", auth(ROLE.USER), AuthCtrl.requestEmailVerification);
 
 router.post("/reset-password", AuthCtrl.resetPassword);
 
 router.get("/request-password-reset", AuthCtrl.requestPasswordReset);
 
-router.post("/update-password",auth(ROLE.USER), AuthCtrl.updatePassword);
+router.post("/update-password", auth(ROLE.USER), AuthCtrl.updatePassword);
 
 export default router;

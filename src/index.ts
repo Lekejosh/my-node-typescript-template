@@ -7,37 +7,41 @@ import "express-async-errors";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import cloudinary from "cloudinary";
-import "./utils/imageWorker";
+
 const app = express();
 app.use(
-  session({
-    secret: "secret_key",
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 1000 + 60 * 60 * 24 * 7,
-    },
-  })
+    session({
+        secret: "348d1911e5741ff7d5a20bb384d1adb2c0fb255ecf4263ba25435f17d47e4e18",
+        resave: false,
+        saveUninitialized: true,
+        cookie: {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            maxAge: 1000 + 60 * 60 * 24 * 7
+        }
+    })
 );
 
 app.use(cookieParser());
 
-const certificateFolder = "certificate";
+/*
+*
+*
+* This is for HTTPS server
+*
+*/
 
-const privateKey = fs.readFileSync(
-  path.join(__dirname, certificateFolder, "private.key"),
-  "utf8"
-);
-const certificate = fs.readFileSync(
-  path.join(__dirname, certificateFolder, "certificate.crt"),
-  "utf8"
-);
-const credentials = { key: privateKey, cert: certificate };
 
-const httpsServer = https.createServer(credentials, app);
+// const certificateFolder = "certificate";
+
+// const privateKey = fs.readFileSync(path.join(__dirname, certificateFolder, "private.key"), "utf8");
+// const certificate = fs.readFileSync(path.join(__dirname, certificateFolder, "certificate.crt"), "utf8");
+// const credentials = { key: privateKey, cert: certificate };
+
+// const httpsServer = https.createServer(credentials, app);
+
+
 const httpServer = http.createServer(app);
 
 import preRouteMiddleware from "./middlewares/pre-route.middleware";
@@ -52,15 +56,16 @@ errorMiddleware(app);
 import { PORT, CLOUDINARY } from "./config";
 
 import "./database/index";
-// import"./database/redis";
+import "./workers/imageWorker";
 
 cloudinary.v2.config({
-  cloud_name: CLOUDINARY.NAME,
-  api_key: CLOUDINARY.APIKEY,
-  api_secret: CLOUDINARY.SECRET,
+    cloud_name: CLOUDINARY.NAME,
+    api_key: CLOUDINARY.APIKEY,
+    api_secret: CLOUDINARY.SECRET,
+    secure: true
 });
 // httpsServer.listen(PORT, async () => {
-//   console.log(`:::> 🚀 Server ready at https://localhost:${PORT}`);
+//     console.log(`:::> 🚀 Server ready at https://localhost:${PORT}`);
 // });
 
  httpServer.listen(PORT, () => {
@@ -70,5 +75,5 @@ cloudinary.v2.config({
  });
 
 app.on("error", (error) => {
-  console.error(`<::: An error occurred on the server: \n ${error}`);
+    console.error(`<::: An error occurred on the server: \n ${error}`);
 });
