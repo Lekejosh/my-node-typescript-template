@@ -3,6 +3,7 @@ import CloudinaryUtil from "../utils/cloudinary";
 import CustomError from "./../utils/custom-error";
 import cloudinary from "cloudinary";
 import { Queue } from "bullmq";
+import client from "../database/redis";
 
 const queue = new Queue("image-upload", {
     redis: { host: "127.0.0.1", port: 6379 }
@@ -76,7 +77,10 @@ class AdminService {
     async delete(userId: string) {
         const user = await User.findByIdAndDelete({ _id: userId });
         if (!user) throw new CustomError("user does not exist");
-
+        const redisUser = await client.get(userId);
+        if (redisUser) await client.del(userId);
+        const userRefreshToken = await client.get(`refresh_token-${userId}`);
+        if (userRefreshToken) await client.del(`refresh_token-${userId}`);
         return user;
     }
 }

@@ -26,7 +26,6 @@ export let userId: string;
 
 describe("Auth test", () => {
     beforeAll(async () => {
-        // Move the login logic here to ensure it's executed before any other test
         const checkUser = await User.findOne({ email: authPayload.email });
         if (!checkUser) await User.create(authPayload);
         const response = await supertest(app).post("/api/v1/auth/login").send(userDetails);
@@ -93,19 +92,18 @@ describe("Auth test", () => {
             expect(response.status).toBe(200);
         });
     });
-       describe("delete one user -- admin", () => {
-           it("should return a 200 status code", async () => {
-               const response = await supertest(app).delete(`/api/v1/admin/${userId}`).set("Authorization", `Bearer ${accessToken}`)
-               expect(response.status).toBe(200);
-           });
-       });
-    describe("logout", () => {
+    describe("delete one user -- admin", () => {
         it("should return a 200 status code", async () => {
+            const response = await supertest(app).delete(`/api/v1/admin/${userId}`).set("Authorization", `Bearer ${accessToken}`);
+            expect(response.status).toBe(200);
+        });
+    });
+    describe("logout", () => {
+        it("should return a 400 status code", async () => {
             const response = await supertest(app)
                 .delete("/api/v1/auth/logout")
                 .set("Cookie", [`refreshToken=${refreshToken}`]);
-
-            expect(response.status).toBe(200);
+            expect(response.status).toBe(400);
         });
     });
 });

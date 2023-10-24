@@ -159,7 +159,7 @@ class AuthService {
         const redisData = `refresh_token-${userId}`;
         const token = await client.get(redisData);
 
-        if (!token) throw new CustomError("invalid or expired refresh token");
+        if (!token) throw new CustomError("invalid or expired refresh token or user does not exist");
         const parsedToken = JSON.parse(token);
 
         const isValid = await bcrypt.compare(refreshToken, parsedToken.token);
