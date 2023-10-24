@@ -8,7 +8,7 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import cloudinary from "cloudinary";
 
-const app = express();
+export const app = express();
 app.use(
     session({
         secret: "348d1911e5741ff7d5a20bb384d1adb2c0fb255ecf4263ba25435f17d47e4e18",

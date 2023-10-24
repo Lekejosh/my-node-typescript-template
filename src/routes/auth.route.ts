@@ -22,6 +22,6 @@ router.post("/reset-password", AuthCtrl.resetPassword);
 
 router.get("/request-password-reset", AuthCtrl.requestPasswordReset);
 
-router.post("/update-password", auth(ROLE.USER), AuthCtrl.updatePassword);
+router.put("/password", auth(ROLE.USER), AuthCtrl.updatePassword);
 
 export default router;

@@ -991,7 +991,7 @@
                         }
                     ],
                     "request": {
-                        "method": "POST",
+                        "method": "PUT",
                         "header": [],
                         "body": {
                             "mode": "raw",
@@ -1003,9 +1003,9 @@
                             }
                         },
                         "url": {
-                            "raw": "{{BASE_URL}}/auth/update-password",
+                            "raw": "{{BASE_URL}}/auth/password",
                             "host": ["{{BASE_URL}}"],
-                            "path": ["auth", "update-password"]
+                            "path": ["auth", "password"]
                         }
                     },
                     "response": [
