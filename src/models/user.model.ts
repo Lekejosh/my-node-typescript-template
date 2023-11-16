@@ -1,6 +1,5 @@
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
-import crypto from "crypto";
 
 export interface IUser extends mongoose.Document {
     name: string;

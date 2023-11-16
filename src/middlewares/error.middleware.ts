@@ -1,16 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import response from "./../utils/response";
 
 // Possible error names
 const errorNames = ["CastError", "JsonWebTokenError", "ValidationError", "SyntaxError", "MongooseError", "MongoError"];
 
-import type { Application, Request, Response, NextFunction } from "express";
+import type { Application, Request, Response } from "express";
 
 export default (app: Application) => {
     app.use("*", (req: Request, res: Response) => {
         res.status(404).send(response("Invalid request", null, false));
     });
 
-    app.use((error: any, req: Request, res: Response, next: NextFunction) => {
+    app.use((error: any, req: Request, res: Response) => {
         if (error.name == "CustomError") {
             res.status(error.status).send(response(error.message, null, false));
         } else if (error.name == "MongoError" && error.code == 11000) {

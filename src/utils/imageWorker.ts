@@ -1,4 +1,4 @@
-// imageUploadWorker.ts
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import cloudinary from "cloudinary";
 import User from "./../models/user.model";
 import { Queue, Worker } from "bullmq";
@@ -33,7 +33,6 @@ const uploadToCloudinary = async (imagePath: any, userId: any) => {
 
         await user.save();
     } catch (error) {
-        // Handle errors here
         console.error("Image upload failed:", error);
     }
 };

@@ -1,7 +1,4 @@
 import supertest from "supertest";
-import { MongoMemoryServer } from "mongodb-memory-server";
-import mongoose from "mongoose";
-import User from "../models/user.model";
 import { app } from "..";
 import { accessToken, refreshToken, userId } from "./auth";
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import ms from "ms";
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
@@ -99,10 +100,11 @@ class AuthService {
         const { refreshToken: refreshTokenJWT } = data;
 
         const decoded: any = JWT.verify(refreshTokenJWT, JWT_SECRET!);
-        let { userId, refreshToken } = decoded;
+        let { refreshToken } = decoded;
+        const { userId } = decoded;
         let user;
 
-        let userString = await client.get(userId);
+        const userString = await client.get(userId);
 
         if (!userString) {
             user = await User.findById(userId);
@@ -174,7 +176,7 @@ class AuthService {
         return true;
     }
 
-    async verifyEmail(data: VerifyEmailInput, userId: String) {
+    async verifyEmail(data: VerifyEmailInput, userId: string) {
         const { verifyToken } = data;
 
         const user = await User.findById(userId);

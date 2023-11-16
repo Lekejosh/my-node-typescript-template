@@ -25,7 +25,7 @@ class UserController {
     }
 
     async delete(req: Request, res: Response) {
-        const result = await AdminService.delete(req.params.userId);
+        await AdminService.delete(req.params.userId);
         res.status(204).end();
     }
 }

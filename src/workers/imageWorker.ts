@@ -1,4 +1,4 @@
-// imageUploadWorker.ts
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { v2 as cloudinary } from "cloudinary";
 import User from "../models/user.model";
 import { Queue, Worker } from "bullmq";

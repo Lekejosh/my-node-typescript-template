@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const trimObjectStrings = (obj: any) => {
     if (typeof obj === "string") {
         return obj.trim();

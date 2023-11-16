@@ -1,7 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import User from "./../models/user.model";
-import CloudinaryUtil from "../utils/cloudinary";
 import CustomError from "./../utils/custom-error";
-import cloudinary from "cloudinary";
 import { Queue } from "bullmq";
 import client from "../database/redis";
 
