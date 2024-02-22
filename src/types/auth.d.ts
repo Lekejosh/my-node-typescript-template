@@ -1,58 +1,71 @@
-interface RegisterInput {
-    name: string;
+export interface VerificationOne {
+    first_name: string;
+    last_name: string;
     email: string;
-    password: string;
-    dateOfBirth: Date;
-    gender: string;
-    termsOfService: boolean;
-}
-
-interface LoginInput {
-    email: string;
+    username: string;
+    phone_number: number;
     password: string;
 }
 
-interface GenerateTokenInput {
+
+export interface LoginInput {
+    username_or_email: string;
+    password: string;
+}
+
+export interface GenerateTokenInput {
     userId: string;
     role: string;
+    email: string;
+    isVerified: boolean;
 }
 
-interface RefreshTokenInput {
+export interface RefreshTokenInput {
     refreshToken: string;
 }
 
-interface LogoutInput {
+export interface LogoutInput {
     refreshToken: string;
 }
 
-interface VerifyEmailInput {
+export interface VerifyEmailInput {
     userId: string;
     verifyToken: string;
 }
 
-interface ResetPasswordInput {
+export interface ResetPasswordInput {
     userId: string;
     resetToken: string;
     password: string;
     confirmPassword: string;
 }
 
-interface UpdatePasswordInput {
+export interface UpdatePasswordInput {
     oldPassword: string;
     newPassword: string;
     confirmPassword: string;
 }
 
-interface AuthToken {
+export interface AuthToken {
     accessToken: string;
     refreshToken: string;
 }
 
-interface PasswordValidator {
+export interface PasswordValidator {
     password: string;
 }
 
-interface generateToken {
+export interface UsernameValidator {
+    username: string;
+}
+
+export interface generateToken {
     userId: string;
     type: string;
+}
+
+export interface verificationDetails {
+    type: string;
+    phone_number?: number;
+    email?: string;
 }

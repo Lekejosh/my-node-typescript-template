@@ -6,17 +6,8 @@ import type { Request, Response } from "express";
 class AuthController {
     async register(req: Request, res: Response) {
         const result = await AuthService.register(req.body);
-        const thirtyDaysInSeconds = 30 * 24 * 60 * 60;
-        const expires = new Date(Date.now() + thirtyDaysInSeconds * 1000);
-        res.cookie("refreshToken", result.refreshToken, {
-            expires,
-            httpOnly: true
-        });
-        const data = {
-            user: result.user,
-            accessToken: result.token
-        };
-        res.status(201).send(response("new user registered successfully", data));
+
+        res.status(201).send(response("new user registered successfully", result));
     }
 
     async login(req: Request, res: Response) {
@@ -61,7 +52,7 @@ class AuthController {
     }
 
     async verifyEmail(req: Request, res: Response) {
-        const result = await AuthService.verifyEmail(req.body, req.$user._id);
+        const result = await AuthService.verifyEmail(req.body);
         res.status(200).send(response("email verified successfully", result));
     }
 

@@ -1,8 +1,5 @@
 import express from "express";
-import https from "https";
 import http from "http";
-import fs from "fs";
-import path from "path";
 import "express-async-errors";
 import cookieParser from "cookie-parser";
 import session from "express-session";
@@ -32,13 +29,6 @@ app.use(cookieParser());
  *
  */
 
-// const certificateFolder = "certificate";
-
-// const privateKey = fs.readFileSync(path.join(__dirname, certificateFolder, "private.key"), "utf8");
-// const certificate = fs.readFileSync(path.join(__dirname, certificateFolder, "certificate.crt"), "utf8");
-// const credentials = { key: privateKey, cert: certificate };
-
-// const httpsServer = https.createServer(credentials, app);
 
 const httpServer = http.createServer(app);
 
@@ -62,9 +52,7 @@ cloudinary.v2.config({
     api_secret: CLOUDINARY.SECRET,
     secure: true
 });
-// httpsServer.listen(PORT, async () => {
-//     console.log(`:::> 🚀 Server ready at https://localhost:${PORT}`);
-// });
+
 
 httpServer.listen(PORT, () => {
     console.log(`HTTP Server is working on http://localhost:${PORT}`);

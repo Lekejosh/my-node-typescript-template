@@ -1,12 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import User from "./../models/user.model";
 import CustomError from "./../utils/custom-error";
-import { Queue } from "bullmq";
-import client from "../database/redis";
 
-const queue = new Queue("image-upload", {
-    redis: { host: "127.0.0.1", port: 6379 }
-} as any);
+
 
 class AdminService {
     async create(data: UserCreateInput) {
@@ -36,7 +32,7 @@ class AdminService {
             .limit(Number(limit) + 1);
 
         const hasNext = users.length > limit;
-        if (hasNext) users.pop(); // Remove the extra user from the array
+        if (hasNext) users.pop(); 
 
         const nextCursor = hasNext ? `${users[users.length - 1]._id}_${users[users.length - 1].createdAt.getTime()}` : null;
 
@@ -57,29 +53,11 @@ class AdminService {
         return user;
     }
 
-    async update(userId: string, data: UserUpdateInput, imagePath: string | undefined) {
-        const user = await User.findById(userId);
-        if (!user) {
-            throw new CustomError("User does not exist");
-        }
-
-        if (imagePath) {
-            await queue.add("image-upload", { imagePath, userId });
-        }
-
-        await user.updateOne(data);
-        const updatedUser = await User.findById(userId);
-
-        return updatedUser;
-    }
 
     async delete(userId: string) {
         const user = await User.findByIdAndDelete({ _id: userId });
         if (!user) throw new CustomError("user does not exist");
-        const redisUser = await client.get(userId);
-        if (redisUser) await client.del(userId);
-        const userRefreshToken = await client.get(`refresh_token-${userId}`);
-        if (userRefreshToken) await client.del(`refresh_token-${userId}`);
+        
         return user;
     }
 }

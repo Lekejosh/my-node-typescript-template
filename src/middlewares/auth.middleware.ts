@@ -4,7 +4,6 @@ import User from "../models/user.model";
 import CustomError from "../utils/custom-error";
 
 import type { Request, Response, NextFunction } from "express";
-import client from "../database/redis";
 
 const urlToSkip = ["/api/v1/auth/email"];
 const { JWT_SECRET } = process.env;
@@ -16,20 +15,11 @@ const { JWT_SECRET } = process.env;
  */
 const auth = (roles: string[] = []) => {
     return async (req: Request, res: Response, next: NextFunction) => {
-        let user;
         if (!req.headers.authorization) throw new CustomError("unauthorized access: Token not found", 401);
         const token = req.headers.authorization.split(" ")[1];
         const decoded = JWT.verify(token, JWT_SECRET!) as JwtPayload;
 
-        const raw = await client.get(decoded.id);
-
-        if (!raw) {
-            user = await User.findOne({ _id: decoded.id });
-            const stringify = JSON.stringify(user);
-            await client.setEx(decoded.id, 83000, stringify);
-        } else {
-            user = JSON.parse(raw);
-        }
+        const user = await User.findOne({ _id: decoded.id });
 
         if (!user) throw new CustomError("unauthorized access: User does not exist", 401);
 

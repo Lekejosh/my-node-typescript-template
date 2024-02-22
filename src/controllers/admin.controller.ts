@@ -19,11 +19,6 @@ class UserController {
         res.status(200).send(response("user data", result));
     }
 
-    async update(req: Request, res: Response) {
-        const result = await AdminService.update(req.params.userId, req.body, req.file ? req.file.path : undefined);
-        res.status(200).send(response("user updated", result));
-    }
-
     async delete(req: Request, res: Response) {
         await AdminService.delete(req.params.userId);
         res.status(204).end();

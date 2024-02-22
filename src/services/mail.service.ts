@@ -44,7 +44,7 @@ class MailService {
 
     async sendEmailVerificationMail(link: string) {
         const subject = "Email Verification";
-        const content = `Hey ${this.user.name}, Please click on the link to verify your email ${link}`;
+        const content = `Hey ${this.user.first_name}, Please click on the link to verify your email ${link}`;
         const recipient = this.user.email;
 
         return await this.send(subject, content, recipient);
@@ -60,7 +60,7 @@ class MailService {
 
     async sendPasswordResetMail(link: string) {
         const subject = "Reset password";
-        const content = `Hey ${this.user.name}, Please click on the link to reset your password ${link}`;
+        const content = `Hey ${this.user.first_name}, Please click on the link to reset your password ${link}`;
         const recipient = this.user.email;
 
         return await this.send(subject, content, recipient);

@@ -1,83 +1,87 @@
 import bcrypt from "bcryptjs";
+import { randomUUID } from "crypto";
 import mongoose from "mongoose";
 
 export interface IUser extends mongoose.Document {
-    name: string;
+    id: string;
+    first_name: string;
+    last_name: string;
     email: string;
-    password: string;
-    image: {
-        url: string;
-        public_id: string;
-    };
-    role: "user" | "admin";
+    username: string;
     isVerified: boolean;
-    dateOfBirth: Date;
-    gender: string;
-    termsOfService: boolean;
+    phone_number: number;
+    password: string;
+    role: "user" | "admin";
     createdAt: Date;
     updatedAt: Date;
 }
 
 const userSchema: mongoose.Schema = new mongoose.Schema(
     {
-        name: {
+        _id: {
+            type: String,
+            default: randomUUID()
+        },
+        first_name: {
             type: String,
             required: true,
             trim: true
+        },
+        last_name: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        username: {
+            type: String,
+            required: true,
+            trim: true,
+            unique: true,
+            set: function (value: string) {
+                return value.toLowerCase();
+            }
         },
         email: {
             type: String,
             required: true,
             unique: true,
-            trim: true
+            trim: true,
+            validate: {
+                validator: function (value: string) {
+                    return /^[\w\-]+(\.[\w\-]+)*@([\w-]+\.)+[\w-]{2,}$/gm.test(value);
+                },
+                message: "Invalid email format"
+            }
+        },
+        phone_number: {
+            type: Number
+        },
+        isVerified: {
+            type: Boolean,
+            default: false
         },
         password: {
             type: String,
             required: true,
             select: false
         },
-        gender: {
-            type: String,
-            required: true
-        },
-        dateOfBirth: {
-            type: Date,
-            required: true
-        },
-        image: {
-            url: {
-                type: String,
-                required: false
-            },
-            public_id: {
-                type: String,
-                required: false
-            }
-        },
         role: {
             type: String,
-            required: true,
-            trim: true,
-            enum: ["user", "admin"],
-            default: "user"
-        },
-        isVerified: {
-            type: Boolean,
-            required: true,
-            default: false
-        },
-        termsOfService: {
-            type: Boolean,
-            required: true,
-            default: true
-        },
-        resetPasswordToken: String,
-        resetPasswordExpire: Date,
-        emailVerificationToken: String,
-        emailVerificationExpire: Date
+            default: "user",
+            enum: ["user", "admin"]
+        }
     },
     {
-        timestamps: true
+        timestamps: true,
+        toJSON: {
+            transform: function (doc, ret) {
+                ret.id = ret._id;
+                delete ret._id;
+                delete ret.password;
+                delete ret.__v;
+                delete ret.identification;
+            }
+        }
     }
 );
 
