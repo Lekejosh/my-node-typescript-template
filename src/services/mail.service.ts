@@ -1,7 +1,7 @@
 import nodemailer, { TransportOptions } from "nodemailer";
 
 import { MAILER, APP_NAME } from "./../config";
-import CustomError from "../utils/custom-error";
+import CustomError from "@leke_josh/modules/build/utils/custom-error";
 
 import type { IUser } from "./../models/user.model";
 

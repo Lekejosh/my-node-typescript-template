@@ -44,7 +44,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"email\": \"lekejosh6wf@gmail.com\",\r\n    \"password\": \"Password$1\",\r\n    \"dateOfBirth\":\"2000/06/20\",\r\n    \"gender\":\"male\",\r\n    \"termsOfService\":true\r\n}",
+                            "raw": "{\r\n    \"first_name\": \"{{$randomFullName}}\",\r\n    \"last_name\":\"{{$randomNameSuffix}}\",\r\n    \"email\": \"lekejosh6wf@gmail.com\",\r\n    \"password\": \"Password$1\",\r\n    \"username\":\"Leke\"\r\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -193,7 +193,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\r\n    \"email\": \"lekejosh6wf@gmail.com\",\r\n    \"password\": \"Password$1.\"\r\n}",
+                            "raw": "{\r\n    \"username_or_email\": \"lekejosh6wf@gmail.com\",\r\n    \"password\": \"Password$1\"\r\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -469,7 +469,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\r\n    \"verifyToken\": \"d52b675e62a0e3fc2b63a85851af28d714fdcaf6\"\r\n}",
+                            "raw": "{\r\n    \"verifyToken\": \"862cc3f6b32b23f572fdfe0bb89edb1ed8e7456b2fd4a84a6d89e7b8b7d9a287\",\r\n    \"userId\":\"b408f41e-4262-4ee0-a557-893952064253\"\r\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -604,9 +604,15 @@
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "{{BASE_URL}}/auth/email",
+                            "raw": "{{BASE_URL}}/auth/email?email=lekejosh6wf@gmail.com",
                             "host": ["{{BASE_URL}}"],
-                            "path": ["auth", "email"]
+                            "path": ["auth", "email"],
+                            "query": [
+                                {
+                                    "key": "email",
+                                    "value": "lekejosh6wf@gmail.com"
+                                }
+                            ]
                         }
                     },
                     "response": [
@@ -859,7 +865,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\r\n    \"userId\": \"652e537083196451112ab3b6\",\r\n    \"resetToken\": \"4bc8af4c8c6f90f8255ddf70296906af17fb0677\",\r\n    \"password\": \"Password$1\",\r\n    \"confirmPassword\":\"Password$1\"\r\n}",
+                            "raw": "{\r\n    \"userId\": \"b408f41e-4262-4ee0-a557-893952064253\",\r\n    \"resetToken\": \"923f2de37fdbf6bf97d4b68eae05da88655ab52c091a39f28fb82e2d7f6233ff\",\r\n    \"password\": \"Password$1\",\r\n    \"confirmPassword\":\"Password$1\"\r\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -995,7 +1001,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\r\n    \"oldPassword\": \"Password$1..\",\r\n    \"newPassword\": \"Password$1\",\r\n    \"confirmPassword\":\"Password$1\"\r\n}",
+                            "raw": "{\r\n    \"oldPassword\": \"Password$1\",\r\n    \"newPassword\": \"Password$1.\",\r\n    \"confirmPassword\":\"Password$1.\"\r\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -1397,7 +1403,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\r\n    \"name\":\"Adeleke Joshua\"\r\n}",
+                            "raw": "{\r\n    \"first_name\":\"Adeleke Joshua\"\r\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -1528,7 +1534,7 @@
                                 {
                                     "key": "image",
                                     "type": "file",
-                                    "src": "/C:/Users/lekej/Downloads/pexels-pixabay-275030.jpg"
+                                    "src": "/C:/Users/lekej/Downloads/WhatsApp Image 2024-02-23 at 18.38.02_9288fdb7.jpg"
                                 }
                             ]
                         },
@@ -2418,175 +2424,6 @@
                             "body": "{\n    \"message\": \"User deleted\",\n    \"data\": {\n        \"_id\": \"6328da23e91c583b8ebb10a2\",\n        \"name\": \"John Olatubosun 5\",\n        \"email\": \"toluolatubosun+5@gmail.com\",\n        \"password\": \"$2a$10$Jms0rq6LO4wtOo3GN2bKd.TAutfdeh.B.DJVkN7.v0Yb5os0KwJJa\",\n        \"role\": \"user\",\n        \"isActive\": true,\n        \"isVerified\": false,\n        \"createdAt\": \"2022-09-19T21:07:47.007Z\",\n        \"updatedAt\": \"2022-09-19T21:40:42.678Z\",\n        \"__v\": 0\n    },\n    \"success\": true\n}"
                         }
                     ]
-                }
-            ]
-        },
-        {
-            "name": "Running Job",
-            "item": [
-                {
-                    "name": "Get All Running Job",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "{{BASE_URL}}/job",
-                            "host": ["{{BASE_URL}}"],
-                            "path": ["job"]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Get Single Jon",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "{{BASE_URL}}/job/:id",
-                            "host": ["{{BASE_URL}}"],
-                            "path": ["job", ":id"],
-                            "variable": [
-                                {
-                                    "key": "id",
-                                    "value": "46"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                }
-            ]
-        },
-        {
-            "name": "Trip",
-            "item": [
-                {
-                    "name": "Create",
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "exec": [
-                                    "// Check if the status code is 201\r",
-                                    "pm.test(\"Status code is 201\", function () {\r",
-                                    "    pm.response.to.have.status(201);\r",
-                                    "});\r",
-                                    "\r",
-                                    "// Check if _id is present in data\r",
-                                    "pm.test(\"Check if _id is present in data\", function () {\r",
-                                    "    var responseBody = pm.response.json();\r",
-                                    "    pm.expect(responseBody.data._id).to.exist;\r",
-                                    "});\r",
-                                    "\r",
-                                    "// Store _id as tripId in collection variable\r",
-                                    "pm.test(\"Store _id as tripId\", function () {\r",
-                                    "    var responseBody = pm.response.json();\r",
-                                    "    var tripId = responseBody.data._id;\r",
-                                    "    pm.collectionVariables.set(\"tripId\", tripId);\r",
-                                    "});"
-                                ],
-                                "type": "text/javascript"
-                            }
-                        }
-                    ],
-                    "request": {
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\r\n    \"destination\":\"London, Uk\",\r\n    \"start_date\":\"2023/12/01\",\r\n    \"end_date\":\"2024/2/02\",\r\n    \"trip_name\":\"Exploration trip\",\r\n    \"notes\":\"This is for me to go and enjoy myself\"\r\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "{{BASE_URL}}/trip",
-                            "host": ["{{BASE_URL}}"],
-                            "path": ["trip"]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Get User Trips",
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "exec": ["pm.test(\"Status code is 200\", function () {\r", "    pm.response.to.have.status(200);\r", "});"],
-                                "type": "text/javascript"
-                            }
-                        }
-                    ],
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "{{BASE_URL}}/trip",
-                            "host": ["{{BASE_URL}}"],
-                            "path": ["trip"]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Get Single Trip by Id",
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "exec": ["pm.test(\"Status code is 200\", function () {\r", "    pm.response.to.have.status(200);\r", "});"],
-                                "type": "text/javascript"
-                            }
-                        }
-                    ],
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "{{BASE_URL}}/trip/single?id={{tripId}}",
-                            "host": ["{{BASE_URL}}"],
-                            "path": ["trip", "single"],
-                            "query": [
-                                {
-                                    "key": "id",
-                                    "value": "{{tripId}}"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Delete Trip",
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "exec": ["pm.test(\"Status code is 200\", function () {\r", "    pm.response.to.have.status(200);\r", "});"],
-                                "type": "text/javascript"
-                            }
-                        }
-                    ],
-                    "request": {
-                        "method": "DELETE",
-                        "header": [],
-                        "url": {
-                            "raw": "{{BASE_URL}}/trip/delete/:id",
-                            "host": ["{{BASE_URL}}"],
-                            "path": ["trip", "delete", ":id"],
-                            "variable": [
-                                {
-                                    "key": "id",
-                                    "value": "{{tripId}}"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
                 }
             ]
         },

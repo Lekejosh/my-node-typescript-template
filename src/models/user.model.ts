@@ -11,6 +11,10 @@ export interface IUser extends mongoose.Document {
     isVerified: boolean;
     phone_number: number;
     password: string;
+    avatar: {
+        url: string;
+        id: string;
+    };
     role: "user" | "admin";
     createdAt: Date;
     updatedAt: Date;
@@ -52,6 +56,10 @@ const userSchema: mongoose.Schema = new mongoose.Schema(
                 },
                 message: "Invalid email format"
             }
+        },
+        avatar: {
+            url: String,
+            id: String
         },
         phone_number: {
             type: Number

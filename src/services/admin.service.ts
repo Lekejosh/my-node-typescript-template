@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { PaginationInput } from "../types/typing";
+import { UserCreateInput } from "../types/user";
 import User from "./../models/user.model";
-import CustomError from "./../utils/custom-error";
-
-
+import CustomError from "@leke_josh/modules/build/utils/custom-error";
 
 class AdminService {
     async create(data: UserCreateInput) {
@@ -32,7 +32,7 @@ class AdminService {
             .limit(Number(limit) + 1);
 
         const hasNext = users.length > limit;
-        if (hasNext) users.pop(); 
+        if (hasNext) users.pop();
 
         const nextCursor = hasNext ? `${users[users.length - 1]._id}_${users[users.length - 1].createdAt.getTime()}` : null;
 
@@ -53,11 +53,10 @@ class AdminService {
         return user;
     }
 
-
     async delete(userId: string) {
         const user = await User.findByIdAndDelete({ _id: userId });
         if (!user) throw new CustomError("user does not exist");
-        
+
         return user;
     }
 }

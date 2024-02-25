@@ -1,4 +1,4 @@
-import response from "../utils/response";
+import { response } from "@leke_josh/modules";
 import AdminService from "../services/admin.service";
 
 import type { Request, Response } from "express";

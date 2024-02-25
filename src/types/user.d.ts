@@ -1,4 +1,4 @@
-interface UserDataInput {
+export interface UserDataInput {
     name?: string;
     email?: string;
     password?: string;
@@ -8,7 +8,7 @@ interface UserDataInput {
     termsOfServices?: boolean;
 }
 
-interface UserCreateInput {
+export interface UserCreateInput {
     name?: string;
     email?: string;
     password?: string;
@@ -18,7 +18,7 @@ interface UserCreateInput {
     termsOfServices?: boolean;
 }
 
-interface UserUpdateInput {
+export interface UserUpdateInput {
     name?: string;
     image?: string;
 }

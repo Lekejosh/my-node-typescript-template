@@ -4,7 +4,7 @@ import trimIncomingRequests from "../middlewares/trim-incoming-requests";
 
 import AuthRoutes from "./auth.route";
 
-// import UserRoutes from "./user.route";
+import UserRoutes from "./user.route";
 
 import AdminRoutes from "./admin.route";
 
@@ -17,7 +17,7 @@ router.use(trimIncomingRequests);
 
 router.use("/api/v1/auth", AuthRoutes);
 
-// router.use("/api/v1/user", UserRoutes);
+router.use("/api/v1/user", UserRoutes);
 
 router.use("/api/v1/admin", AdminRoutes);
 router.get("/", (req: Request, res: Response) => {

@@ -7,9 +7,9 @@ import JWT from "jsonwebtoken";
 
 import User from "./../models/user.model";
 import MailService from "./mail.service";
-import CustomError from "../utils/custom-error";
-import { URL } from "../config"
-import Token from "../models/token.model"
+import CustomError from "@leke_josh/modules/build/utils/custom-error";
+import { URL } from "../config";
+import Token from "../models/token.model";
 import {
     GenerateTokenInput,
     LoginInput,
@@ -21,6 +21,7 @@ import {
     UsernameValidator,
     VerificationOne,
     VerifyEmailInput,
+    refreshTokenDecode
 } from "../types/auth";
 import { startSession } from "mongoose";
 
@@ -38,44 +39,43 @@ class AuthService {
         const session = await startSession();
         session.startTransaction();
 
-            let user = await User.findOne({ email: data.email }).session(session);
-            if (user) throw new CustomError("email already exists", 409);
+        let user = await User.findOne({ email: data.email }).session(session);
+        if (user) throw new CustomError("email already exists", 409);
 
-            user = await User.findOne({ username: data.username }).session(session);
+        user = await User.findOne({ username: data.username }).session(session);
 
-            const usernameTest = await this.usernameValidator({ username: data.username });
+        const usernameTest = await this.usernameValidator({ username: data.username });
 
-            if (!usernameTest)
-                throw new CustomError(
-                    "Username must be 3 to 15 characters long; The acceptable special characters are: full stop, underscores and dash; you can't use only special characters as username"
-                );
+        if (!usernameTest)
+            throw new CustomError(
+                "Username must be 3 to 15 characters long; The acceptable special characters are: full stop, underscores and dash; you can't use only special characters as username"
+            );
 
-            if (user) throw new CustomError("Username, already taken", 409);
+        if (user) throw new CustomError("Username, already taken", 409);
 
-            if (data.phone_number) {
-                user = await User.findOne({ phone_number: data.phone_number }).session(session);
+        if (data.phone_number) {
+            user = await User.findOne({ phone_number: data.phone_number }).session(session);
 
-                if (user) throw new CustomError("Phone number, already exist", 409);
-            }
+            if (user) throw new CustomError("Phone number, already exist", 409);
+        }
 
-            const validate = await this.isPasswordValid({ password: data.password });
+        const validate = await this.isPasswordValid({ password: data.password });
 
-            if (!validate) {
-                throw new CustomError("Password must contain at least one capital letter, one special character, one number, one small letter, and be at least 8 characters long");
-            }
+        if (!validate) {
+            throw new CustomError("Password must contain at least one capital letter, one special character, one number, one small letter, and be at least 8 characters long");
+        }
 
-            user = await new User(data).save();
+        user = await new User(data).save();
 
-            await session.commitTransaction();
-            session.endSession();
-            if (process.env.NODE_ENV !== "test") {
-                await this.requestEmailVerification(user.email);
-            }
-            return {
-                user
-            }
+        await session.commitTransaction();
+        session.endSession();
+        if (process.env.NODE_ENV !== "test") {
+            await this.requestEmailVerification(user.email);
+        }
+        return {
+            user
+        };
     }
-
 
     async login(data: LoginInput) {
         if (!data.username_or_email) throw new CustomError("Username or email is required");
@@ -92,7 +92,7 @@ class AuthService {
             userId: user.id,
             role: user.role,
             email: user.email,
-            isVerified: user.isVerified,
+            isVerified: user.isVerified
         });
         return {
             user,
@@ -123,7 +123,7 @@ class AuthService {
     async refreshAccessToken(data: RefreshTokenInput) {
         const { refreshToken: refreshTokenJWT } = data;
 
-        const decoded: any = JWT.verify(refreshTokenJWT, JWT_SECRET!);
+        const decoded = JWT.verify(refreshTokenJWT, JWT_SECRET!) as refreshTokenDecode;
         let { refreshToken } = decoded;
         const { userId } = decoded;
 
@@ -170,7 +170,7 @@ class AuthService {
     async logout(data: LogoutInput) {
         const { refreshToken: refreshTokenJWT } = data;
 
-        const decoded: any = JWT.verify(refreshTokenJWT, JWT_SECRET!);
+        const decoded = JWT.verify(refreshTokenJWT, JWT_SECRET!) as refreshTokenDecode;
         const { refreshToken, userId } = decoded;
 
         const user = await User.findById(userId);
@@ -211,7 +211,7 @@ class AuthService {
         const isValid = await bcrypt.compare(verifyToken, VToken.token);
         if (!isValid) throw new CustomError("invalid or expired email verification reset token");
 
-        user.isVerified= true;
+        user.isVerified = true;
         await user.save();
         await VToken.deleteOne();
         if (process.env.NODE_ENV !== "test") {
@@ -220,8 +220,6 @@ class AuthService {
         return true;
     }
 
-  
-   
     async requestPasswordReset(username_email: string) {
         if (!username_email) throw new CustomError("email/username is required");
 
@@ -351,7 +349,6 @@ class AuthService {
 
         return regex.test(username);
     }
-
 }
 
 export default new AuthService();

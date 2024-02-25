@@ -7,7 +7,6 @@ export interface VerificationOne {
     password: string;
 }
 
-
 export interface LoginInput {
     username_or_email: string;
     password: string;
@@ -68,4 +67,15 @@ export interface verificationDetails {
     type: string;
     phone_number?: number;
     email?: string;
+}
+
+export interface GenerateTokenInput {
+    userId: string;
+    role: string;
+    email: string;
+}
+
+export interface refreshTokenDecode extends JWT.JwtPayload {
+    refreshToken: string;
+    userId: string;
 }

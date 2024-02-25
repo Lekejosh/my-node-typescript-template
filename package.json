@@ -5,10 +5,9 @@
     "main": "index.js",
     "scripts": {
         "start": "node dist/index.js",
-        "dev": "nodemon dist/index.js",
-        "build": "tsc -p . && node src/copy-certificate.js",
+        "dev": "nodemon --exec ts-node src/index.ts",
+        "build": "tsc -p .",
         "start:prod": "pm2 start ecosystem.config.js --env production",
-        "watch": "node src/copy-certificate.js && tsc -w",
         "prettier": "prettier --write .",
         "lint": "eslint src/**/*.ts",
         "format": "eslint src/**/*.ts --fix",
@@ -23,6 +22,7 @@
     "author": "Adeleke Joshua <lekejosh6wf@gmail.com>",
     "license": "MIT",
     "dependencies": {
+        "@leke_josh/modules": "^0.0.19",
         "bcryptjs": "^2.4.3",
         "cloudinary": "^1.41.0",
         "cookie": "^0.5.0",

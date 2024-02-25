@@ -1,17 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import response from "./../utils/response";
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 // Possible error names
-const errorNames = ["CastError", "JsonWebTokenError", "ValidationError", "SyntaxError", "MongooseError", "MongoError"];
+const errorNames = ["CastError", "JsonWebTokenError", "ValidationError", "SyntaxError", "MongooseError", "MongoError", "TokenExpiredError"];
 
-import type { Application, Request, Response } from "express";
+import { response } from "@leke_josh/modules";
+import type { Application, Request, Response, NextFunction } from "express";
 
 export default (app: Application) => {
     app.use("*", (req: Request, res: Response) => {
-        res.status(404).send(response("Invalid request", null, false));
+        res.status(404).send(response("API Route not found", null, false));
     });
 
-    app.use((error: any, req: Request, res: Response) => {
+    app.use((error: any, req: Request, res: Response, next: NextFunction) => {
         if (error.name == "CustomError") {
             res.status(error.status).send(response(error.message, null, false));
         } else if (error.name == "MongoError" && error.code == 11000) {

@@ -1,4 +1,4 @@
-import response from "../utils/response";
+import { response } from "@leke_josh/modules";
 import AuthService from "../services/auth.service";
 
 import type { Request, Response } from "express";
@@ -57,13 +57,13 @@ class AuthController {
     }
 
     async requestEmailVerification(req: Request, res: Response) {
-        const result = await AuthService.requestEmailVerification(req.$user._id);
-        res.status(200).send(response("email verification link sent", result));
+        await AuthService.requestEmailVerification(req.query.email as string);
+        res.status(200).send(response("email verification link sent", true));
     }
 
     async requestPasswordReset(req: Request, res: Response) {
-        const result = await AuthService.requestPasswordReset(req.query.email as string);
-        res.status(200).send(response("password reset link sent", result));
+        await AuthService.requestPasswordReset(req.query.email as string);
+        res.status(200).send(response("password reset link sent", true));
     }
 
     async resetPassword(req: Request, res: Response) {
@@ -72,7 +72,7 @@ class AuthController {
     }
 
     async updatePassword(req: Request, res: Response) {
-        const result = await AuthService.updatePassword(req.$user._id, req.body);
+        const result = await AuthService.updatePassword(req.$user?.id as string, req.body);
         res.status(200).send(response("password updated", result));
     }
 }
